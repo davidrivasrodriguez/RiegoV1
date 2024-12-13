@@ -6,9 +6,12 @@ export class Check {
         this.states = [];
     }
 
+    // metodo para cambiar el valor del checkbox
     changeValue(name, value) {
+        // buscamos el estado en el array de estados
         const data = this.states.find((item) => item.name == name);
-        if (data) {
+        // si el estado es diferente al valor que se quiere cambiar se actualiza y lo enviamos al servidor
+        if (data && data.state !== value) {
             data.state = value;
             const check = this.parent.querySelector(`label.form-switch[data-name="${name}"]`);
             if (check) {
@@ -21,7 +24,7 @@ export class Check {
                     input.checked = value;
                 }
             }
-            // Aquí se envía el mensaje al servidor
+            // aquí se envía el mensaje al servidor
             this.client.send({ name: name, state: value });
         }
     }
