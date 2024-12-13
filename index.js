@@ -10,26 +10,25 @@ app.use(cors());
 app.use(express.json());
 
 const datos = {
-    lista: []
+    estados: [],
 }
 
 // Rutas
-app.get('/', (req, res) => {
-    res.send('Bienvenido a la REST API con Node.js y import!');
+app.post('/api/estado', (req, res) => {
+    const { name, state } = req.body;
+    const existingState = datos.estados.find(item => item.name === name);
+    if (existingState) {
+        existingState.state = state;
+    } else {
+        datos.estados.push({ name, state });
+    }
+    console.log(`Estado de ${name} actualizado a ${state}`);
+    res.status(200).json({ name, state });
 });
 
-app.get('/api/items', (req, res) => {    
-    res.json(datos.lista);
+app.get('/api/estado', (req, res) => {
+    res.json(datos.estados);
 });
-
-app.post('/api/items', (req, res) => {
-    const newItem = req.body;
-    console.log(`Llega ${newItem.name}`);
-    newItem.id = Date.now();
-    datos.lista.push(newItem);
-    res.status(201).json(newItem);
-});
-
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);

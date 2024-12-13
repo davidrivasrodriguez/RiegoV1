@@ -1,7 +1,8 @@
 export class Check {
-    constructor(parent, client) {
+    constructor(parent, client, group) {
         this.parent = parent;
         this.client = client;
+        this.group = group;
         this.states = [];
     }
 
@@ -15,18 +16,25 @@ export class Check {
                 if (span) {
                     span.textContent = value ? 'ON' : 'OFF';
                 }
+                const input = check.querySelector('input');
+                if (input) {
+                    input.checked = value;
+                }
             }
+            // Aquí se envía el mensaje al servidor
+            this.client.send({ name: name, state: value });
         }
     }
 
     addCheck(name) {
+        const id = `${this.group}-${name}`;
         this.states.push({
-            name: name,
+            name: id,
             state: false
         });
         const check = document.createElement("label");
         check.classList.add("form-switch");
-        check.setAttribute('data-name', name);
+        check.setAttribute('data-name', id);
         this.parent.appendChild(check);
         const input = document.createElement("input");
         input.setAttribute('type', 'checkbox');
@@ -37,7 +45,7 @@ export class Check {
         span.appendChild(text);
         check.appendChild(span);
         input.addEventListener('change', (event) => {
-            this.changeValue(name, event.target.checked);
+            this.changeValue(id, event.target.checked);
         });
     }
 }
