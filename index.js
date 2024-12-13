@@ -11,6 +11,12 @@ app.use(express.json());
 
 const datos = {
     estados: [],
+    configuracion: {
+        grupo1: ["riego1", "riego2"],
+        grupo2: ["riego1", "riego2", "riego3", "riego4"],
+        grupo3: ["riego1", "riego2"],
+        grupo4: ["riego1", "riego2", "riego3", "riego4", "riego5"],
+    }
 }
 
 // Rutas
@@ -28,6 +34,10 @@ app.post('/api/estado', (req, res) => {
 
 app.get('/api/estado', (req, res) => {
     res.json(datos.estados);
+});
+
+app.get('/api/configuracion', (req, res) => {
+    res.json(datos.configuracion);
 });
 
 app.listen(PORT, () => {

@@ -26,11 +26,11 @@ export class Check {
         }
     }
 
-    addCheck(name) {
+    addCheck(name, initialState = false) {
         const id = `${this.group}-${name}`;
         this.states.push({
             name: id,
-            state: false
+            state: initialState
         });
         const check = document.createElement("label");
         check.classList.add("form-switch");
@@ -38,10 +38,11 @@ export class Check {
         this.parent.appendChild(check);
         const input = document.createElement("input");
         input.setAttribute('type', 'checkbox');
+        input.checked = initialState;
         check.appendChild(input);
         check.appendChild(document.createElement("i"));
         const span = document.createElement('span');
-        const text = document.createTextNode('OFF');
+        const text = document.createTextNode(initialState ? 'ON' : 'OFF');
         span.appendChild(text);
         check.appendChild(span);
         input.addEventListener('change', (event) => {
